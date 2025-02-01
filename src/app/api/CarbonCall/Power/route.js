@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import ShippingSchema from "@/models/ShippingSchema";
+import PowerSchema from "@/models/PowerSchema";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
@@ -23,7 +23,7 @@ export async function POST(req) {
     }
 
     try {
-      const { distance_value, distance_unit, weight_value, weight_unit, transport_method } = await req.json();
+      const { electricity_unit, electricity_value, country, state } = await req.json();
       const API_KEY = process.env.CARBON_INTERFACE_API_KEY;
       const response = await fetch("https://www.carboninterface.com/api/v1/estimates", {
         method: "POST",
@@ -32,12 +32,11 @@ export async function POST(req) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          type: "shipping",
-          distance_value: parseFloat(distance_value),
-          distance_unit,
-          weight_value: parseFloat(weight_value),
-          weight_unit,
-          transport_method,
+          type: "electricity",
+          electricity_unit,
+          electricity_value: parseFloat(electricity_value),
+          country,
+          state,
         }),
       });
 
@@ -46,16 +45,15 @@ export async function POST(req) {
       }
 
       const data = await response.json();
-      const estimateData = {
+      const powerData = {
         data: {
           id: data.data.id,
           type: data.data.type,
           attributes: {
-            distance_value: data.data.attributes.distance_value,
-            distance_unit: data.data.attributes.distance_unit,
-            weight_value: data.data.attributes.weight_value,
-            weight_unit: data.data.attributes.weight_unit,
-            transport_method: data.data.attributes.transport_method,
+            country: data.data.attributes.country,
+            state: data.data.attributes.state,
+            electricity_unit: data.data.attributes.electricity_unit,
+            electricity_value: data.data.attributes.electricity_value,
             estimated_at: data.data.attributes.estimated_at,
             carbon_g: data.data.attributes.carbon_g,
             carbon_lb: data.data.attributes.carbon_lb,
@@ -64,12 +62,12 @@ export async function POST(req) {
           },
         },
         user_id: userEmail,
-        est_type:"Shipping" // Use actual user email from token
+        est_type:"Power" // Use actual user email from token
       };
 
       // Save the data to the database
-      const newShippingEstimate = new ShippingSchema(estimateData);
-      await newShippingEstimate.save();
+      const newPowerEstimate = new PowerSchema(powerData);
+      await newPowerEstimate.save();
 
       return NextResponse.json(data);
     } catch (error) {

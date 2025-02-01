@@ -34,6 +34,9 @@ export default function UserProfile() {
     <div>
       {user ? <p>Logged in as: {user.email}</p> : <p>Not logged in</p>}
       <Button text={"Shipping"} onClick={()=>router.push("/Calculate/Shipping")}/>
+      <Button text={"Power"} onClick={()=>router.push("/Calculate/Power")}/>
+      <Button text={"Flights"} onClick={()=>router.push("/Calculate/Flight")}/>
+      <Button text={"Fuel"} onClick={()=>router.push("/Calculate/Fuel")}/>
     </div>
   );
 }

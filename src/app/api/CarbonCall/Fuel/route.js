@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import ShippingSchema from "@/models/ShippingSchema";
+import FuelSchema from "@/models/FuelSchema";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
@@ -17,13 +17,14 @@ export async function POST(req) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userEmail = decoded.email;
     console.log(userEmail);
+    console.log("Here")
 
     if (!userEmail) {
       return NextResponse.json({ message: "Email not found in token" }, { status: 403 });
     }
 
     try {
-      const { distance_value, distance_unit, weight_value, weight_unit, transport_method } = await req.json();
+      const { fuel_source_type, fuel_source_unit, fuel_source_value } = await req.json();
       const API_KEY = process.env.CARBON_INTERFACE_API_KEY;
       const response = await fetch("https://www.carboninterface.com/api/v1/estimates", {
         method: "POST",
@@ -32,12 +33,10 @@ export async function POST(req) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          type: "shipping",
-          distance_value: parseFloat(distance_value),
-          distance_unit,
-          weight_value: parseFloat(weight_value),
-          weight_unit,
-          transport_method,
+          type: "fuel_combustion",
+          fuel_source_type,
+          fuel_source_unit,
+          fuel_source_value: parseFloat(fuel_source_value),
         }),
       });
 
@@ -51,11 +50,9 @@ export async function POST(req) {
           id: data.data.id,
           type: data.data.type,
           attributes: {
-            distance_value: data.data.attributes.distance_value,
-            distance_unit: data.data.attributes.distance_unit,
-            weight_value: data.data.attributes.weight_value,
-            weight_unit: data.data.attributes.weight_unit,
-            transport_method: data.data.attributes.transport_method,
+            fuel_source_type: data.data.attributes.fuel_source_type,
+            fuel_source_unit: data.data.attributes.fuel_source_unit,
+            fuel_source_value: data.data.attributes.fuel_source_value,
             estimated_at: data.data.attributes.estimated_at,
             carbon_g: data.data.attributes.carbon_g,
             carbon_lb: data.data.attributes.carbon_lb,
@@ -64,12 +61,14 @@ export async function POST(req) {
           },
         },
         user_id: userEmail,
-        est_type:"Shipping" // Use actual user email from token
+        est_type: "FuelCombustion",
       };
 
       // Save the data to the database
-      const newShippingEstimate = new ShippingSchema(estimateData);
-      await newShippingEstimate.save();
+      console.log("Before entering databases")
+      const newFuelEstimate = new FuelSchema(estimateData);
+      await newFuelEstimate.save();
+      console.log("After entering databse")
 
       return NextResponse.json(data);
     } catch (error) {
