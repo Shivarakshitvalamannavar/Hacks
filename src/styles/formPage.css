@@ -1,0 +1,87 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0f7fa, #c8e6c9); /* Light green and blue gradient */
+    font-family: 'Arial', sans-serif;
+    width: 100%; /* Ensure the container takes full width */
+    padding: 1rem; /* Add padding to avoid content touching the edges */
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+    padding: 2.5rem; /* Increased padding */
+    border-radius: 1rem; /* More rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 100%;
+    max-width: 32rem; /* Slightly wider */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    border: 1px solid #e0e0e0; /* Light border */
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.title {
+    font-size: 2rem; /* Larger title */
+    font-weight: 700;
+    margin-bottom: 1.5rem; /* More spacing */
+    color: #2e7d32; /* Dark green for eco-friendly theme */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Slightly more spacing between form groups */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000000; /* Darker text for better contrast */
+}
+
+.input {
+    width: 100%;
+    padding: 0.75rem 1.5rem; /* Larger input */
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333; /* Darker text color */
+}
+
+.add-leg-button {
+    background-color: #4caf50; /* Green for eco-friendly theme */
+    color: white;
+    padding: 0.75rem 1.5rem; /* Larger button */
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.add-leg-button:hover {
+    background-color: #388e3c; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.add-leg-button:active {
+    transform: scale(0.95); /* Slightly shrink on click */
+}

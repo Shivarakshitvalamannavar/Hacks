@@ -1,7 +1,6 @@
 "use client";
-
 import { useState } from "react";
-import Button from "@/components/button/button";
+import "../../styles/auth.css"; // Import the shared CSS file
 
 export default function SignupPage() {
   const [username, setUsername] = useState("");
@@ -10,7 +9,6 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  // Handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -39,43 +37,47 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1>Signup</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2" >
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="border p-2 rounded"
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="border p-2 rounded"
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="border p-2 rounded"
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {message && <p style={{ color: "green" }}>{message}</p>}
-        <Button text="Submit" />
-      </form>
+    <div className="container">
+      <div className="card">
+        <h1 className="title">Signup</h1>
+        {error && <p className="error">{error}</p>}
+        {message && <p className="success">{message}</p>}
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label className="label">Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="input"
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="input"
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="input"
+            />
+          </div>
+          <button type="submit" className="button">
+            Signup
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

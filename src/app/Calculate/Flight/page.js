@@ -2,6 +2,7 @@
 
 import Button from "@/components/button/button";
 import { useState } from "react";
+import "../../../styles/formPage.css"; // Import the CSS file
 
 export default function FlightEstimateForm() {
   const [formData, setFormData] = useState({
@@ -32,60 +33,66 @@ export default function FlightEstimateForm() {
     });
 
     const result = await response.json();
-    if(response.ok){
-        alert(`Estimated Carbon Emission: ${result.data.attributes.carbon_kg} kg`);
-    }else{
-        alert(`Error : ${result.error}`)
+    if (response.ok) {
+      alert(`Estimated Carbon Emission: ${result.data.attributes.carbon_kg} kg`);
+    } else {
+      alert(`Error: ${result.error}`);
     }
-
   };
 
   return (
-    <div>
-      <h1>Flight Emission Estimate</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Passengers:
-          <input
-            type="number"
-            name="passengers"
-            value={formData.passengers}
-            onChange={(e) => setFormData({ ...formData, passengers: e.target.value })}
-            required
-          />
-        </label>
-
-        {formData.legs.map((leg, index) => (
-          <div key={index}>
-            <label>
-              Departure Airport:
-              <select value={leg.departure_airport} onChange={(e) => handleChange(e, index, "departure_airport")}>
-                <option value="DEL">Delhi (DEL)</option>
-                <option value="BOM">Mumbai (BOM)</option>
-                <option value="BLR">Bangalore (BLR)</option>
-                <option value="MAA">Chennai (MAA)</option>
-                <option value="HYD">Hyderabad (HYD)</option>
-              </select>
-            </label>
-
-            <label>
-              Destination Airport:
-              <select value={leg.destination_airport} onChange={(e) => handleChange(e, index, "destination_airport")}>
-                <option value="DEL">Delhi (DEL)</option>
-                <option value="BOM">Mumbai (BOM)</option>
-                <option value="BLR">Bangalore (BLR)</option>
-                <option value="MAA">Chennai (MAA)</option>
-                <option value="HYD">Hyderabad (HYD)</option>
-              </select>
-            </label>
+    <div className="container">
+      <div className="card">
+        <h1 className="title">Flight Emission Estimate</h1>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label className="label">Passengers:</label>
+            <input
+              type="number"
+              name="passengers"
+              value={formData.passengers}
+              onChange={(e) => setFormData({ ...formData, passengers: e.target.value })}
+              required
+              className="input"
+            />
           </div>
-        ))}
 
-        <button type="button" onClick={addLeg}>Add Flight Leg</button>
-        <Button text={"Submit"}/>
-      </form>
+          {formData.legs.map((leg, index) => (
+            <div key={index} className="form-group">
+              <label className="label">Departure Airport:</label>
+              <select
+                value={leg.departure_airport}
+                onChange={(e) => handleChange(e, index, "departure_airport")}
+                className="input"
+              >
+                <option value="DEL">Delhi (DEL)</option>
+                <option value="BOM">Mumbai (BOM)</option>
+                <option value="BLR">Bangalore (BLR)</option>
+                <option value="MAA">Chennai (MAA)</option>
+                <option value="HYD">Hyderabad (HYD)</option>
+              </select>
 
+              <label className="label">Destination Airport:</label>
+              <select
+                value={leg.destination_airport}
+                onChange={(e) => handleChange(e, index, "destination_airport")}
+                className="input"
+              >
+                <option value="DEL">Delhi (DEL)</option>
+                <option value="BOM">Mumbai (BOM)</option>
+                <option value="BLR">Bangalore (BLR)</option>
+                <option value="MAA">Chennai (MAA)</option>
+                <option value="HYD">Hyderabad (HYD)</option>
+              </select>
+            </div>
+          ))}
 
+          <button type="button" onClick={addLeg} className="add-leg-button">
+            Add Flight Leg
+          </button>
+          <Button text={"Submit"} />
+        </form>
+      </div>
     </div>
   );
 }
